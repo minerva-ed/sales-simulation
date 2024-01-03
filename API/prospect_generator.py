@@ -6,8 +6,11 @@ general_agent = GeneralAgent()  # Instantiate a GeneralAgent
 async def generate_prospects(product_description: str, sales_profile: str):
     res = await general_agent.get_prospects(product_description, sales_profile)
     print(res)
-    prospects = json.loads(res.result[7:-3])
-    return prospects
+    try: 
+        prospects = json.loads(res.result[7:-3])
+        return prospects
+    except:
+        throw("Error in generating prospects")
 
 if __name__ == "__main__":
     import asyncio  # Import asyncio for asynchronous execution

@@ -6,6 +6,8 @@ import Loading from '../../../components/Loading';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+const API_ENDPOINT = "20.115.40.108"
+
 
 const PracticePage = ({ params }: { params: { id: string } }) => {
     const task_id = params.id;
@@ -19,7 +21,7 @@ const PracticePage = ({ params }: { params: { id: string } }) => {
     const isNextRecord = (hasNext && subtitles[currentIndex + 1] === '[record]');
     const [isFinal, setIsFinal] = useState(false);
     useEffect(() => {
-        const get_qa = new WebSocket(`ws://127.0.0.1:8000/ws/get-qa-dialog/${task_id}`);
+        const get_qa = new WebSocket(`ws://${API_ENDPOINT}:8000/ws/get-qa-dialog/${task_id}`);
         get_qa.onopen = () => console.log('WebSocket Connected');
 
         get_qa.onmessage = (event) => {

@@ -1,3 +1,4 @@
+'use client';
 import ResultsView from "@/app/ResultsView"
 
 

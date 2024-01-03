@@ -1,4 +1,6 @@
 'use client';
+const API_ENDPOINT = "20.115.40.108"
+
 import { useEffect, useState } from 'react';
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import SimulatorView from './Simulator';
@@ -11,10 +13,10 @@ export default function ResultsView({ task_id }: ResultsViewProps) {
     const [taskResult, setTaskResult] = useState(null);
     const [error, setError] = useState(null);
     const [index, setIndex] = useState(0);
-    const loading_message = ["Loading.", "Loading..", "Loading...", "Running Sales Simulation.", "Running Sales Simulation..", "Running Sales Simulation...", "Simulating questions.", "Simulating questions..", "Simulating questions..."]
+    const [loading_message, setLoadingMessage] = useState(["Loading.", "Loading..", "Loading...", "Running Sales Simulation.", "Running Sales Simulation..", "Running Sales Simulation...", "Simulating questions.", "Simulating questions..", "Simulating questions..."])
 
     useEffect(() => {
-        const ws = new WebSocket(`ws://127.0.0.1:8000/ws/${task_id}`);
+        const ws = new WebSocket(`ws://${API_ENDPOINT}:8000/ws/${task_id}`);
 
         ws.onopen = () => console.log('WebSocket Connected');
 
@@ -22,6 +24,8 @@ export default function ResultsView({ task_id }: ResultsViewProps) {
             const data = JSON.parse(event.data);
             if (data.error) {
                 setError(data.error);
+                setLoadingMessage(["Error: " + data.error]);
+                setIndex(0);
             } else {
                 setTaskResult(data);
             }

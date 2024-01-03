@@ -96,10 +96,10 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
 
         # Check if task exists and stream updates
         if not task:
-            await websocket.send_text("Task not found")
+            await websocket.send_json({"error": "Task not found"})
             return
         while task["status"] == "in progress":
-            print("in-progress")
+            # print("in-progress")
             await asyncio.sleep(1)
         await websocket.send_json(task["result"])
     finally:
@@ -124,10 +124,10 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
 
         # Check if task exists and stream updates
         if not task:
-            await websocket.send_text("Task not found")
+            await websocket.send_json({"error": "Task not found"})
             return
         while task["status"] == "in progress":
-            print("in-progress")
+            # print("in-progress")
             await asyncio.sleep(1)
         
         await websocket.send_json(get_qa(task["result"]))
