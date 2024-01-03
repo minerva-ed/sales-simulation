@@ -1,6 +1,8 @@
+import { FormEvent } from "react";
+
 interface ActionButtonProps {
     children: React.ReactNode;
-    onClick: () => void;
+    onClick: (event: FormEvent) => Promise<void>;
     color?: string;
 }
 

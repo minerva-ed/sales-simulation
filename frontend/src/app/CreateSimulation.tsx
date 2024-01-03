@@ -17,25 +17,25 @@ interface CustomerProfile {
 
 const API_ENDPOINT = "20.115.40.108"
 
-const url = "http://${API_ENDPOINT}:8000"
+const url = `http://${API_ENDPOINT}:8000`
 
 const Disclosure: React.FC = () => {
     return (
         <div className="py-4">
             <h2 className="text-xl mb-4 font-bold text-gray-800">Welcome to the Alpha Demo of Minerva!</h2>
             <p className="text-gray-600 text-sm mb-2">
-                As part of our commitment to revolutionizing sales training, we're excited to offer you an early glimpse into Minerva - our cutting-edge sales-simulation software. Minerva is designed to automatically find leads, simulate realistic sales conversations, and create tailored training programs for sales representatives.
+                As part of our commitment to revolutionizing sales training, we are excited to offer you an early glimpse into Minerva - our cutting-edge sales-simulation software. Minerva is designed to automatically find leads, simulate realistic sales conversations, and create tailored training programs for sales representatives.
             </p>
-            <h2 className="text-lg mb-3 font-semibold text-gray-800">Here's What You Need to Know:</h2>
+            <h2 className="text-lg mb-3 font-semibold text-gray-800">Here is What You Need to Know:</h2>
             <p className="text-gray-600 text-sm mb-2">
                 <strong>Data Privacy:</strong> We value your privacy. All data used in this demo is stored anonymously, but may be publically accessible as we have not setup authentication. Please do not upload any sensitive data.<br/>
                 <strong>Data Persistence:</strong> Please note that your data may not be permanently stored and could be lost when we restart our servers.<br />
                 <strong>Training Data:</strong> Currently, we do not collect data from training sessions. However, as we evolve, we may start collecting this data to further enhance your experience.<br />
-                <strong>Alpha Version:</strong> Remember, this is an alpha version. As exciting as it is, some parts might be a bit rough around the edges. We're working hard to polish every aspect of Minerva, with new features and your feedback during this phase is invaluable.
+                <strong>Alpha Version:</strong> Remember, this is an alpha version. As exciting as it is, some parts might be a bit rough around the edges. We are working hard to polish every aspect of Minerva, with new features and your feedback during this phase is invaluable.
             </p>
             <h2 className="text-lg mb-3 font-semibold text-gray-800">Your Participation Shapes Minerva:</h2>
             <p className="text-gray-600 text-sm">
-                Your experience and feedback are crucial. By using this alpha version, you're not just testing a product - you're helping shape the future of sales training! Please write to us at <a href="mailto:team@minervai.co"/> with your feedback, questions, and suggestions!
+                Your experience and feedback are crucial. By using this alpha version, you are not just testing a product - you are helping shape the future of sales training! Please write to us at <a href="mailto:team@minervai.co"/> with your feedback, questions, and suggestions!
             </p>
         </div>
     )
