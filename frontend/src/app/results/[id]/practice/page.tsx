@@ -4,18 +4,43 @@ import InteractiveImage from '../../../components/InteractiveImage';
 import agentImage from '../../../public/agent-image.png';
 import Loading from '../../../components/Loading';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const PracticePage = () => {
+
+const PracticePage = ({ params }: { params: { id: string } }) => {
+    const task_id = params.id;
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
-    const [subtitles, setSubtitles] = useState(['[Salesforce] Could you elaborate on how the AI-generated customer behaviors are tailored to reflect the specific challenges and scenarios our sales team encounters in our industry?', '[record]', '[HubSpot] Could you elaborate on the specific metrics or KPIs that the software tracks to measure the improvement in sales performance?)', '[record]']);
+    const [subtitles, setSubtitles] = useState(['Loading...', '[record]']);
     const [currentIndex, setCurrentIndex] = useState(0);
     const hasNext = (currentIndex < subtitles.length - 1);
     const hasBack = (currentIndex > 0);
     const isNextRecord = (hasNext && subtitles[currentIndex + 1] === '[record]');
     const [isFinal, setIsFinal] = useState(false);
+    useEffect(() => {
+        const get_qa = new WebSocket(`ws://127.0.0.1:8000/ws/get-qa-dialog/${task_id}`);
+        get_qa.onopen = () => console.log('WebSocket Connected');
+
+        get_qa.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.error) {
+                subtitles[0] = (data.error);
+            } else {
+                console.log(data);
+                setSubtitles(data["questions"].flatMap((question: string) => [question, "[record]"]));
+            }
+        };
+
+        get_qa.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        get_qa.onclose = () => console.log('WebSocket Disconnected');
+
+
+        return () => { get_qa.close(); }
+    }, [task_id]);
     // State and business logic for managing components
     const handleRecordingComplete = () => {
         console.log('Recording complete', subtitles, currentIndex);

@@ -5,7 +5,7 @@ import utilities as util
 general_agent = GeneralAgent()  # Instantiate a GeneralAgent
 async def generate_prospects(product_description: str, sales_profile: str):
     res = await general_agent.get_prospects(product_description, sales_profile)
-    print(res.result[7:-3])
+    print(res)
     prospects = json.loads(res.result[7:-3])
     return prospects
 

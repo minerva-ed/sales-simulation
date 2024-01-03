@@ -63,12 +63,11 @@ async def run_simulation(task_id: str, content: str, customers: str):
 
 @app.post("/customer-profiles/")
 async def generate_customer_profiles(product_file: UploadFile = File(...), sales_profile: str = Form(...)):
-    # product_details = await product_file.read()
-    # print("generate profiles:", product_details, sales_profile)
-    # return await pg.generate_prospects(product_details, sales_profile)
-    with open('samples/sales/sample-customers.json', 'r') as f:
-        data = json.load(f)
-        return data
+    product_details = await product_file.read()
+    return await pg.generate_prospects(product_details, sales_profile)
+    # with open('samples/sales/sample-customers.json', 'r') as f:
+    #     data = json.load(f)
+    #     return data
 
 @app.websocket("/ws/sample")
 async def sample_websocket_endpoint(websocket: WebSocket):
@@ -103,6 +102,35 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
             print("in-progress")
             await asyncio.sleep(1)
         await websocket.send_json(task["result"])
+    finally:
+        # Close the WebSocket connection
+        print("websocket closing")
+        await websocket.close()
+
+@app.websocket("/ws/get-qa-dialog/{task_id}")
+async def websocket_endpoint(websocket: WebSocket, task_id: str):
+    """
+    WebSocket endpoint to stream the status and result of the simulation task.
+    :param websocket: The WebSocket connection instance.
+    :param task_id: The task ID for which status and result are to be streamed.
+    """
+    def get_qa(task_res):
+        return {"questions":[ "[" + task_res["sales"][0]['customers'][qa['associated_customers_list'][0]] + "]: " + qa['question'] for qa in task_res["sales"][0]["QnA"]], "answers": [qa['answer'] for qa in task_res["sales"][0]["QnA"]]}
+    
+    await websocket.accept()
+    try:
+        # Retrieve the task based on task_id
+        task = tasks.get(task_id)
+
+        # Check if task exists and stream updates
+        if not task:
+            await websocket.send_text("Task not found")
+            return
+        while task["status"] == "in progress":
+            print("in-progress")
+            await asyncio.sleep(1)
+        
+        await websocket.send_json(get_qa(task["result"]))
     finally:
         # Close the WebSocket connection
         print("websocket closing")

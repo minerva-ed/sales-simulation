@@ -62,6 +62,7 @@ async def simulate_sales(sales_material, sales_index, sales_agent, customer_agen
 
     sales_Json = {
         "sales": sales_content.result,
+        "customers": [customer.company_name for customer in customer_agents],
         "QnA": qa_map_output
     }
     return sales_Json  # Return the sales JSON object

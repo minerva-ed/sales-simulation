@@ -23,7 +23,7 @@ const InteractiveImage = ({ recording, setRecording, hasBack, hasNext, isNextRec
     return (
         <div className="relative w-full text-center">
             {recording ? (<Recording onRecordingComplete={onRecord} width={960} height={540}/>) : (<Image src={imgSrc} alt={imgAlt} width={960}/>)}
-            {!recording && <div className="rounded absolute m-4 w-full max-w-xl mx-auto bottom-0 bg-black bg-opacity-50 text-white p-4 text-center left-1/2 transform -translate-x-1/2">
+            {!recording && <div className="rounded absolute m-4 w-full max-w-xl mx-auto bottom-0 bg-black bg-opacity-50 text-white p-4 text-center left-1/2 transform -translate-x-1/2 z-10">
                 {subtitle}
             </div>}
             { !recording &&

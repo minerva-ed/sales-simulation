@@ -78,6 +78,7 @@ const CustomerProfiles: React.FC<CustomerProfilesProps> = ({ customerProfiles, o
                 </button>
               ) : (
                 <button
+                  disabled={true}
                   onClick={() => setEditingIndex(index)}
                   className="text-blue-600 hover:text-blue-900 mr-2"
                 >
@@ -93,7 +94,7 @@ const CustomerProfiles: React.FC<CustomerProfilesProps> = ({ customerProfiles, o
       </tbody>
       </table>
       <div className="mt-4">
-        <button onClick={onAdd} className="float-right m-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <button onClick={onAdd} disabled={true} className="float-right m-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none">
           Add New Customer
         </button>
       </div>

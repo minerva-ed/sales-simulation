@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import FileUpload from './components/FileUpload';
 import SalesStage from './components/SalesStage';
 import CustomerProfiles from './components/CustomerProfiles';
@@ -25,7 +25,15 @@ const CreateSimulation: React.FC = () => {
     const [salesStage, setSalesStage] = useState<string>('');
     const [fileName, setFileName] = useState<string>('');
     const [customerProfiles, setCustomerProfiles] = useState<CustomerProfile[]>([]);
-
+    const [isGBDisabled, setIsGBDisabled,] = useState<boolean>(true)
+    const [isCustomerLoading, setIsCustomerLoading] = useState<boolean>(false);
+    useEffect(() => {
+        if (typeof salesDocument === 'undefined' || salesStage.length < 10) {
+            setIsGBDisabled(true)
+        } else {
+            setIsGBDisabled(false)
+        }
+    }, [salesDocument, salesStage])
     // Event handlers are typed with `FormEvent` for form submissions
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
@@ -93,8 +101,10 @@ const CreateSimulation: React.FC = () => {
                 // Add other transformations here as needed
             }));
             setCustomerProfiles(newCustomerProfiles);
+            setIsCustomerLoading(false);
         } catch (error) {
             console.error('Failed to fetch customer profiles:', error);
+            setIsCustomerLoading(false);
             throw error;
         }
     }
@@ -114,10 +124,15 @@ const CreateSimulation: React.FC = () => {
                     salesStage={salesStage}
                     setSalesStage={setSalesStage}
                     onGenerateProfiles={onGenerateProfiles}
+                    isDisabled={isGBDisabled}
+                    setIsLoading={setIsCustomerLoading}
+                    isLoading={isCustomerLoading}
                 />
                 <CustomerProfiles
                     customerProfiles={customerProfiles}
                     onDelete={handleDeleteProfile}
+                    onAdd={() => {}}
+                    onEdit={() => {}}
                 />
                 <div className="flex space-x-4">
                     <ActionButton onClick={handleSubmit}>Run Simulation (&lt; 2 mins)</ActionButton>
